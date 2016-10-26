@@ -41,6 +41,8 @@ function main() {
 
   case "${action}" in
     "start")
+      ulimit -n <%= p("databases.max_connections", 500) + 1000 %>
+
       if [ -d "${DATA_DIR_OLD}" -a -f "${DATA_DIR_OLD}/postgresql.conf" ]; then
         set +e
         "${PACKAGE_DIR}/bin/pg_ctl" stop -m fast -w -D ${DATA_DIR}
@@ -60,9 +62,7 @@ function main() {
 
       mkdir -p "${RUN_DIR}"
 
-      echo "" > "${PIDFILE}"
-
-      exec "${JOB_DIR}/bin/postgres_start.sh"
+      su -c "${JOB_DIR}/bin/postgres_start.sh" vcap
       ;;
 
     "stop")

@@ -22,6 +22,7 @@ function main() {
 
   RUN_DIR=/var/vcap/sys/run/postgres
   PIDFILE="${RUN_DIR}/postgres.pid"
+  echo "" > "${PIDFILE}"
 
   HOST="0.0.0.0"
   PORT="<%= p("databases.port") %>"
